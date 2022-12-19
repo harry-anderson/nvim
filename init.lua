@@ -484,20 +484,19 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 --
--- Rust tools
-local rt = require("rust-tools")
-
-rt.setup({
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-})
-
+-- Yaml
+require('lspconfig').rust_analyzer.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+    ["rust-analyzer"] = {
+        -- enable clippy on save
+        checkOnSave = {
+          command = "clippy",
+        },
+      },
+    }
+}
 
 -- Yaml
 require('lspconfig').yamlls.setup {
@@ -507,64 +506,64 @@ require('lspconfig').yamlls.setup {
       debounce_text_changes = 150,
     },
     settings = {
-            yaml = {
-              trace = {
-                server = "verbose"
-              },
-            schemaDownload = {  enable = true },
-            validate = true,
-            customTags = {
-                -- AWS cloudformation tags
-                -- https://github.com/redhat-developer/yaml-language-server/issues/77
-                "!And scalar",
-                "!And mapping",
-                "!And sequence",
-                "!If scalar",
-                "!If mapping",
-                "!If sequence",
-                "!Not scalar",
-                "!Not mapping",
-                "!Not sequence",
-                "!Equals scalar",
-                "!Equals mapping",
-                "!Equals sequence",
-                "!Or scalar",
-                "!Or mapping",
-                "!Or sequence",
-                "!FindInMap scalar",
-                "!FindInMap mappping",
-                "!FindInMap sequence",
-                "!Base64 scalar",
-                "!Base64 mapping",
-                "!Base64 sequence",
-                "!Cidr scalar",
-                "!Cidr mapping",
-                "!Cidr sequence",
-                "!Ref scalar",
-                "!Ref mapping",
-                "!Ref sequence",
-                "!Sub scalar",
-                "!Sub mapping",
-                "!Sub sequence",
-                "!GetAtt scalar",
-                "!GetAtt mapping",
-                "!GetAtt sequence",
-                "!GetAZs scalar",
-                "!GetAZs mapping",
-                "!GetAZs sequence",
-                "!ImportValue scalar",
-                "!ImportValue mapping",
-                "!ImportValue sequence",
-                "!Select scalar",
-                "!Select mapping",
-                "!Select sequence",
-                "!Split scalar",
-                "!Split mapping",
-                "!Split sequence",
-                "!Join scalar",
-                "!Join mapping",
-                "!Join sequence"
-            }
+      Yaml = {
+        trace = {
+          server = "verbose"
+        },
+        schemaDownload = {  enable = true },
+        validate = true,
+        customTags = {
+            -- AWS cloudformation tags
+            -- https://github.com/redhat-developer/yaml-language-server/issues/77
+            "!And scalar",
+            "!And mapping",
+            "!And sequence",
+            "!If scalar",
+            "!If mapping",
+            "!If sequence",
+            "!Not scalar",
+            "!Not mapping",
+            "!Not sequence",
+            "!Equals scalar",
+            "!Equals mapping",
+            "!Equals sequence",
+            "!Or scalar",
+            "!Or mapping",
+            "!Or sequence",
+            "!FindInMap scalar",
+            "!FindInMap mappping",
+            "!FindInMap sequence",
+            "!Base64 scalar",
+            "!Base64 mapping",
+            "!Base64 sequence",
+            "!Cidr scalar",
+            "!Cidr mapping",
+            "!Cidr sequence",
+            "!Ref scalar",
+            "!Ref mapping",
+            "!Ref sequence",
+            "!Sub scalar",
+            "!Sub mapping",
+            "!Sub sequence",
+            "!GetAtt scalar",
+            "!GetAtt mapping",
+            "!GetAtt sequence",
+            "!GetAZs scalar",
+            "!GetAZs mapping",
+            "!GetAZs sequence",
+            "!ImportValue scalar",
+            "!ImportValue mapping",
+            "!ImportValue sequence",
+            "!Select scalar",
+            "!Select mapping",
+            "!Select sequence",
+            "!Split scalar",
+            "!Split mapping",
+            "!Split sequence",
+            "!Join scalar",
+            "!Join mapping",
+            "!Join sequence"
         }
+      }
     }
 }

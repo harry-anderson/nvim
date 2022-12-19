@@ -116,3 +116,22 @@ require('telescope').setup{
 }
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('dap')
+
+-- Emmet
+vim.g.user_emmet_mode = 'n'
+vim.g.user_emmet_leader_key = ','
+vim.g.user_emmet_settings = {
+    typescript = {
+        extends = 'jsx',
+    },
+    typescriptreact = {
+        extends = 'jsx',
+    }
+}
+
+vim.g.neoformat_try_node_exe = 1
+
+
+-- -- Show diagnostic popup on cursor hover
+vim.g.updatetime = 150
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float()]]
