@@ -25,7 +25,13 @@ require('packer').startup(function(use)
 
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    requires = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip'
+    },
   }
 
   use { -- Highlight, edit, and navigate code
@@ -247,7 +253,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'yaml', 'bash' },
 
   highlight = { enable = true },
   indent = { enable = true },
@@ -366,7 +372,22 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'gopls', }
+local servers = {
+  'clangd',
+  'rust_analyzer',
+  'pyright',
+  'tsserver',
+  'sumneko_lua',
+  'gopls',
+  'yamlls',
+  'html',
+  'bashls',
+  'terraformls',
+  'solc',
+  'dockerls',
+  'cssls',
+  'jsonls'
+}
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -455,8 +476,95 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'path', keyword_length = 2 },
+    { name = 'buffer', keyword_length = 2 },
   },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+-- Rust tools
+local rt = require("rust-tools")
+
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
+})
+
+
+-- Yaml
+require('lspconfig').yamlls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    settings = {
+            yaml = {
+              trace = {
+                server = "verbose"
+              },
+            schemaDownload = {  enable = true },
+            validate = true,
+            customTags = {
+                -- AWS cloudformation tags
+                -- https://github.com/redhat-developer/yaml-language-server/issues/77
+                "!And scalar",
+                "!And mapping",
+                "!And sequence",
+                "!If scalar",
+                "!If mapping",
+                "!If sequence",
+                "!Not scalar",
+                "!Not mapping",
+                "!Not sequence",
+                "!Equals scalar",
+                "!Equals mapping",
+                "!Equals sequence",
+                "!Or scalar",
+                "!Or mapping",
+                "!Or sequence",
+                "!FindInMap scalar",
+                "!FindInMap mappping",
+                "!FindInMap sequence",
+                "!Base64 scalar",
+                "!Base64 mapping",
+                "!Base64 sequence",
+                "!Cidr scalar",
+                "!Cidr mapping",
+                "!Cidr sequence",
+                "!Ref scalar",
+                "!Ref mapping",
+                "!Ref sequence",
+                "!Sub scalar",
+                "!Sub mapping",
+                "!Sub sequence",
+                "!GetAtt scalar",
+                "!GetAtt mapping",
+                "!GetAtt sequence",
+                "!GetAZs scalar",
+                "!GetAZs mapping",
+                "!GetAZs sequence",
+                "!ImportValue scalar",
+                "!ImportValue mapping",
+                "!ImportValue sequence",
+                "!Select scalar",
+                "!Select mapping",
+                "!Select sequence",
+                "!Split scalar",
+                "!Split mapping",
+                "!Split sequence",
+                "!Join scalar",
+                "!Join mapping",
+                "!Join sequence"
+            }
+        }
+    }
+}
