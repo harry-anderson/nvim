@@ -1,5 +1,4 @@
 return function(use)
-  use 'simrat39/rust-tools.nvim'
   use "projekt0n/github-nvim-theme"
   use 'ThePrimeagen/vim-be-good'
   use {

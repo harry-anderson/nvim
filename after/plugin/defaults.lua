@@ -133,5 +133,5 @@ vim.g.neoformat_try_node_exe = 1
 
 
 -- -- Show diagnostic popup on cursor hover
-vim.g.updatetime = 150
-vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float()]]
+-- vim.g.updatetime = 300
+-- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float()]]

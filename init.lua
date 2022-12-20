@@ -484,7 +484,7 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 --
--- Yaml
+-- Rust
 require('lspconfig').rust_analyzer.setup {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -506,7 +506,7 @@ require('lspconfig').yamlls.setup {
       debounce_text_changes = 150,
     },
     settings = {
-      Yaml = {
+      yaml = {
         trace = {
           server = "verbose"
         },
